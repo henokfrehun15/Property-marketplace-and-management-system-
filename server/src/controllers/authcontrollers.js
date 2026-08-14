@@ -1,3 +1,4 @@
+const User = require("../models/user");
 const { registerUser } = require("../services/authservices");
 
 const register = async (req, res) => {
