@@ -1,5 +1,8 @@
 const User = require("../models/user");
-const { registerUser } = require("../services/authservices");
+const { 
+    registerUser,
+    loginUser
+ } = require("../services/authservices");
 
 const register = async (req, res) => {
   try {
@@ -28,7 +31,35 @@ const register = async (req, res) => {
     });
   }
 };
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const { user, token } = await loginUser({
+      email,
+      password
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Login successful",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
 
 module.exports = {
-  register
+  register,
+  login
 };
