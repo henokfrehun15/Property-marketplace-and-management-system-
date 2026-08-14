@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const connectDB = require("./src/config/db");
 const authroutes = require("./src/routes/authroutes");
+
 dotenv.config();
 
 const app = express();
@@ -15,7 +16,7 @@ app.get("/api/health", (req, res) => {
     success: true,
     message: "PropertyHub API is running"
   });
-});
+}); 
 
 const PORT = process.env.PORT || 5000;
 
