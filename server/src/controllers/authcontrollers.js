@@ -71,8 +71,16 @@ const getMe = async (req, res) => {
     });
   }
 };
+const ownerTest = async (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "You are authorized as an owner",
+    user: req.user
+  });
+};
 module.exports = {
   register,
   login,      
-  getMe
+  getMe,
+  ownerTest
 };
