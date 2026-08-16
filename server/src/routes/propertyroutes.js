@@ -3,7 +3,9 @@ const express = require("express");
 const { 
     create,
     getAll,
-    getProperty
+    getProperty,
+    update,
+    remove
  } = require("../controllers/propertycontrollers");
 
 const protect = require("../middleware/authmiddleware");
@@ -19,4 +21,16 @@ router.post(
 );
 router.get("/", getAll);
 router.get("/:id", getProperty);
+router.put(
+  "/:id",
+  protect,
+  authorize("owner", "admin"),
+  update
+);
+router.delete(
+  "/:id",
+  protect,
+  authorize("owner", "admin"),
+  remove
+);
 module.exports = router;
