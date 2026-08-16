@@ -1,6 +1,9 @@
 const express = require("express");
 
-const { create } = require("../controllers/propertycontrollers");
+const { 
+    create,
+    getAll
+ } = require("../controllers/propertycontrollers");
 
 const protect = require("../middleware/authmiddleware");
 const authorize = require("../middleware/rolemiddleware");
@@ -13,5 +16,5 @@ router.post(
   authorize("owner", "admin"),
   create
 );
-
+router.get("/", getAll);
 module.exports = router;
