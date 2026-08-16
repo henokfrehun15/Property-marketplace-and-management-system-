@@ -1,7 +1,9 @@
 const { 
     createProperty,
     getAllProperties,
-    getPropertyById
+    getPropertyById,
+    updateProperty,
+    deleteProperty
  } = require("../services/propertyservices");
 
 const create = async (req, res) => {
@@ -54,8 +56,50 @@ const getProperty = async (req, res) => {
     });
   }
 };
+const update = async (req, res) => {
+  try {
+    const property = await updateProperty(
+      req.params.id,
+      req.body,
+      req.user.userId,
+      req.user.role
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Property updated successfully",
+      property
+    });
+  } catch (error) {
+    res.status(error.statusCode || 400).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+const remove = async (req, res) => {
+  try {
+    await deleteProperty(
+      req.params.id,
+      req.user.userId,
+      req.user.role
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Property deleted successfully"
+    });
+  } catch (error) {
+    res.status(error.statusCode || 400).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
 module.exports = {
   create,
   getAll,
-  getProperty
+  getProperty,
+  update,
+  remove
 };
