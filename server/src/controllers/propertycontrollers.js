@@ -1,6 +1,7 @@
 const { 
     createProperty,
-    getAllProperties
+    getAllProperties,
+    getPropertyById
  } = require("../services/propertyservices");
 
 const create = async (req, res) => {
@@ -38,7 +39,23 @@ const getAll = async (req, res) => {
     });
   }
 };
+const getProperty = async (req, res) => {
+  try {
+    const property = await getPropertyById(req.params.id);
+
+    res.status(200).json({
+      success: true,
+      property
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
 module.exports = {
   create,
-  getAll
+  getAll,
+  getProperty
 };
