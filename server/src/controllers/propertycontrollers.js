@@ -1,4 +1,7 @@
-const { createProperty } = require("../services/propertyservices");
+const { 
+    createProperty,
+    getAllProperties
+ } = require("../services/propertyservices");
 
 const create = async (req, res) => {
   try {
@@ -19,7 +22,23 @@ const create = async (req, res) => {
     });
   }
 };
+const getAll = async (req, res) => {
+  try {
+    const properties = await getAllProperties();
 
+    res.status(200).json({
+      success: true,
+      count: properties.length,
+      properties
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch properties"
+    });
+  }
+};
 module.exports = {
-  create
+  create,
+  getAll
 };
