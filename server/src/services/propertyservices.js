@@ -17,7 +17,18 @@ const getAllProperties = async () => {
 
   return properties;
 };
+const getPropertyById = async (propertyId) => {
+  const property = await Property.findById(propertyId)
+    .populate("owner", "name email");
+
+  if (!property) {
+    throw new Error("Property not found");
+  }
+
+  return property;
+};
 module.exports = {
   createProperty,
-  getAllProperties
+  getAllProperties,
+  getPropertyById
 };
