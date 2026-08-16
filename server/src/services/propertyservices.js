@@ -8,7 +8,16 @@ const createProperty = async (propertyData, ownerId) => {
 
   return property;
 };
+const getAllProperties = async () => {
+  const properties = await Property.find({
+    status: "available"
+  })
+    .populate("owner", "name email")
+    .sort({ createdAt: -1 });
 
+  return properties;
+};
 module.exports = {
-  createProperty
+  createProperty,
+  getAllProperties
 };
