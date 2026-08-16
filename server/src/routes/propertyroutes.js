@@ -2,7 +2,8 @@ const express = require("express");
 
 const { 
     create,
-    getAll
+    getAll,
+    getProperty
  } = require("../controllers/propertycontrollers");
 
 const protect = require("../middleware/authmiddleware");
@@ -17,4 +18,5 @@ router.post(
   create
 );
 router.get("/", getAll);
+router.get("/:id", getProperty);
 module.exports = router;
