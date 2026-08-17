@@ -1,5 +1,5 @@
 const Property = require("../models/property");
-
+const AppError = require("../utils/appError");
 const createProperty = async (propertyData, ownerId) => {
   const property = await Property.create({
     ...propertyData,
@@ -149,7 +149,7 @@ const getPropertyById = async (propertyId) => {
     .populate("owner", "name email");
 
   if (!property) {
-    throw new Error("Property not found");
+    throw new AppError("Property not found", 404);
   }
 
   return property;
@@ -158,15 +158,16 @@ const updateProperty = async (propertyId, updateData, userId, userRole) => {
   const property = await Property.findById(propertyId);
 
   if (!property) {
-    throw new Error("Property not found");
+    throw new AppError("Property not found", 404);
   }
 
   const isOwner = property.owner.toString() === userId.toString();
   const isAdmin = userRole === "admin";
 
   if (!isOwner && !isAdmin) {
-    const error = new Error(
-      "You do not have permission to update this property"
+    const error = new AppError(
+      "You do not have permission to update this property",
+      403
     );
 
     error.statusCode = 403;
@@ -188,15 +189,16 @@ const deleteProperty = async (propertyId, userId, userRole) => {
   const property = await Property.findById(propertyId);
 
   if (!property) {
-    throw new Error("Property not found");
+    throw new AppError("Property not found", 404);
   }
 
   const isOwner = property.owner.toString() === userId.toString();
   const isAdmin = userRole === "admin";
 
   if (!isOwner && !isAdmin) {
-    const error = new Error(
-      "You do not have permission to delete this property"
+    const error = new AppError(
+      "You do not have permission to delete this property",
+      403
     );
 
     error.statusCode = 403;
