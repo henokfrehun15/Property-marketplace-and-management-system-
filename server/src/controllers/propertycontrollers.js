@@ -27,12 +27,11 @@ const create = async (req, res) => {
 };
 const getAll = async (req, res) => {
   try {
-    const properties = await getAllProperties();
+    const result = await getAllProperties(req.query);
 
     res.status(200).json({
       success: true,
-      count: properties.length,
-      properties
+      ...result
     });
   } catch (error) {
     res.status(500).json({
