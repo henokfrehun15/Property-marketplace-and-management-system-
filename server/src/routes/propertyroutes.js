@@ -1,5 +1,5 @@
 const express = require("express");
-
+const asyncMiddleware = require("../middleware/asyncmiddleware");
 const { 
     create,
     getAll,
@@ -17,20 +17,20 @@ router.post(
   "/",
   protect,
   authorize("owner", "admin"),
-  create
+  asyncMiddleware(create)
 );
-router.get("/", getAll);
-router.get("/:id", getProperty);
+router.get("/", asyncMiddleware(getAll));
+router.get("/:id", asyncMiddleware(getProperty));
 router.put(
   "/:id",
   protect,
   authorize("owner", "admin"),
-  update
+  asyncMiddleware(update)
 );
 router.delete(
   "/:id",
   protect,
   authorize("owner", "admin"),
-  remove
+  asyncMiddleware(remove)
 );
 module.exports = router;
