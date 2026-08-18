@@ -41,7 +41,28 @@ const uploadImages = async (files) => {
 
   return results;
 };
+const deleteImage = async (publicId) => {
+  if (!publicId) {
+    return;
+  }
+
+  await cloudinary.uploader.destroy(publicId);
+};
+
+const deleteImages = async (images) => {
+  if (!images || images.length === 0) {
+    return;
+  }
+
+  const deletePromises = images.map((image) =>
+    deleteImage(image.publicId)
+  );
+
+  await Promise.all(deletePromises);
+};
 module.exports = {
   uploadImage,
-  uploadImages
+  uploadImages,
+  deleteImage,
+  deleteImages
 };
