@@ -1,9 +1,15 @@
 const Property = require("../models/property");
 const AppError = require("../utils/appError");
-const createProperty = async (propertyData, ownerId) => {
+
+const createProperty = async (
+  propertyData, 
+  ownerId, 
+  imageUrls = []
+) => {
   const property = await Property.create({
     ...propertyData,
-    owner: ownerId
+    owner: ownerId,
+    images: imageUrls
   });
 
   return property;
