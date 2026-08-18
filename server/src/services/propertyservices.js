@@ -1,15 +1,17 @@
 const Property = require("../models/property");
 const AppError = require("../utils/appError");
-
+const {
+  deleteImages
+} = require("./imageservices");
 const createProperty = async (
   propertyData, 
   ownerId, 
-  imageUrls = []
+  images = []
 ) => {
   const property = await Property.create({
     ...propertyData,
     owner: ownerId,
-    images: imageUrls
+    images
   });
 
   return property;
@@ -210,7 +212,7 @@ const deleteProperty = async (propertyId, userId, userRole) => {
     error.statusCode = 403;
     throw error;
   }
-
+  await deleteImages(property.images);
   await Property.findByIdAndDelete(propertyId);
 
   return property;
