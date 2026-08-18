@@ -1,4 +1,5 @@
 const express = require("express");
+const uploadMiddleware = require("../middleware/uploadmiddleware");
 const asyncMiddleware = require("../middleware/asyncmiddleware");
 const { 
     create,
@@ -17,6 +18,7 @@ router.post(
   "/",
   protect,
   authorize("owner", "admin"),
+  uploadMiddleware.array("images", 10),
   asyncMiddleware(create)
 );
 router.get("/", asyncMiddleware(getAll));
