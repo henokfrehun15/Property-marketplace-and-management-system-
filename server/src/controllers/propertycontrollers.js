@@ -5,18 +5,43 @@ const {
     updateProperty,
     deleteProperty
  } = require("../services/propertyservices");
-
+const {uploadImages} = require("../services/imageservices");
 const create = async (req, res) => {
-    const property = await createProperty(
-      req.body,
-      req.user.userId
-    );
+  const uploadedImages = await uploadImages(req.files);
 
-    res.status(201).json({
-      success: true,
-      message: "Property created successfully",
-      property
+  const imageUrls = uploadedImages.map(image => image.url);
+
+  let location;
+
+  try {
+    location = JSON.parse(req.body.location);
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid location format"
     });
+  }
+
+  const propertyData = {
+    ...req.body,
+    location,
+    area: Number(req.body.area),
+    price: Number(req.body.price),
+    bedrooms: Number(req.body.bedrooms),
+    bathrooms: Number(req.body.bathrooms)
+  };
+
+  const property = await createProperty(
+    propertyData,
+    req.user.userId,
+    imageUrls
+  );
+
+  res.status(201).json({
+    success: true,
+    message: "Property created successfully",
+    property
+  });
 };
 const getAll = async (req, res) => {
     const result = await getAllProperties(req.query);
@@ -41,7 +66,6 @@ const update = async (req, res) => {
       req.user.userId,
       req.user.role
     );
-
     res.status(200).json({
       success: true,
       message: "Property updated successfully",
