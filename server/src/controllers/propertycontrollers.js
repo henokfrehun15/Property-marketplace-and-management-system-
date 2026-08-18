@@ -9,7 +9,10 @@ const {uploadImages} = require("../services/imageservices");
 const create = async (req, res) => {
   const uploadedImages = await uploadImages(req.files);
 
-  const imageUrls = uploadedImages.map(image => image.url);
+  const propertyImages = uploadedImages.map(image => ({
+    url: image.url,
+    publicId: image.publicId
+  }));
 
   let location;
 
@@ -34,7 +37,7 @@ const create = async (req, res) => {
   const property = await createProperty(
     propertyData,
     req.user.userId,
-    imageUrls
+    propertyImages
   );
 
   res.status(201).json({
