@@ -43,6 +43,9 @@ function Navbar() {
               Favorites
             </NavLink>
           )}
+          <NavLink to="/dashboard">
+            Dashboard
+          </NavLink>
 
         </nav>
 
