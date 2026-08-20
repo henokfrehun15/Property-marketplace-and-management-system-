@@ -5,6 +5,9 @@ import Properties from "./pages/property";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import Favorites from "./pages/Favorites";
+import OwnerDashboard from "./pages/OwnerDashboard";
+import AddProperty from "./pages/AddProperty";
+import EditProperty from "./pages/EditProperty";
 function Home() {
   return (
     <div>
@@ -34,6 +37,18 @@ function App() {
             path="/Favorites" element={<Favorites />}
           />
         </Route>
+        <Route
+          path="/dashboard"
+          element={<OwnerDashboard />}
+        />
+        <Route
+          path="/properties/create"
+          element={<AddProperty />}
+      />
+        <Route
+          path="/properties/:id/edit"
+          element={<EditProperty />}
+        />
       </Routes>
     </BrowserRouter>
   );
