@@ -217,10 +217,20 @@ const deleteProperty = async (propertyId, userId, userRole) => {
 
   return property;
 };
+const getMyProperties = async (ownerId) => {
+  const properties = await Property.find({
+    owner: ownerId
+  })
+    .populate("owner", "name email")
+    .sort({ createdAt: -1 });
+
+  return properties;
+};
 module.exports = {
   createProperty,
   getAllProperties,
   getPropertyById,
   updateProperty,
-  deleteProperty
+  deleteProperty,
+  getMyProperties
 };
