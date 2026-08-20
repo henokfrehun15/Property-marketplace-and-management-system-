@@ -1,0 +1,309 @@
+.edit-property-page {
+  min-height: calc(100vh - 72px);
+  padding: 50px 20px 80px;
+
+  background: #f8fafc;
+}
+
+.edit-property-container {
+  width: 100%;
+  max-width: 900px;
+
+  margin: 0 auto;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.edit-property-header {
+  margin-bottom: 32px;
+}
+
+.edit-property-header span {
+  display: inline-block;
+
+  margin-bottom: 10px;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  color: #2563eb;
+}
+
+.edit-property-header h1 {
+  margin: 0 0 8px;
+
+  font-size: 36px;
+  line-height: 1.2;
+
+  color: #111827;
+}
+
+.edit-property-header p {
+  margin: 0;
+
+  font-size: 16px;
+
+  color: #6b7280;
+}
+
+/* =========================
+   ERROR
+========================= */
+
+.form-error {
+  margin-bottom: 24px;
+  padding: 14px 16px;
+
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+
+  background: #fef2f2;
+
+  color: #b91c1c;
+
+  font-size: 14px;
+}
+
+.edit-status {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 400px;
+
+  font-size: 18px;
+
+  color: #6b7280;
+}
+
+.edit-status.edit-error {
+  color: #b91c1c;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.property-form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 24px;
+}
+
+.form-section {
+  padding: 28px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.form-section h2 {
+  margin: 0 0 24px;
+
+  font-size: 20px;
+
+  color: #111827;
+}
+
+/* =========================
+   GRID
+========================= */
+
+.form-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+/* =========================
+   LABEL
+========================= */
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+
+  color: #374151;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 12px 14px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+
+  background: #ffffff;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  color: #111827;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.form-group input,
+.form-group select {
+  height: 46px;
+}
+
+.form-group textarea {
+  resize: vertical;
+
+  min-height: 120px;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #9ca3af;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.form-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  padding-top: 4px;
+}
+
+.cancel-button,
+.submit-button {
+  min-height: 46px;
+
+  padding: 0 22px;
+
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    opacity 0.2s ease,
+    background 0.2s ease;
+}
+
+.cancel-button {
+  border: 1px solid #d1d5db;
+
+  background: #ffffff;
+
+  color: #374151;
+}
+
+.cancel-button:hover {
+  background: #f3f4f6;
+}
+
+.submit-button {
+  border: none;
+
+  background: #111827;
+
+  color: #ffffff;
+}
+
+.submit-button:hover {
+  opacity: 0.9;
+
+  transform: translateY(-1px);
+}
+
+.submit-button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+  .edit-property-page {
+    padding: 30px 15px 60px;
+  }
+
+  .edit-property-header h1 {
+    font-size: 28px;
+  }
+
+  .form-section {
+    padding: 20px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group.full-width {
+    grid-column: auto;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .cancel-button,
+  .submit-button {
+    width: 100%;
+  }
+}
