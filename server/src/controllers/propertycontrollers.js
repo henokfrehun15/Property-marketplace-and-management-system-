@@ -3,7 +3,8 @@ const {
     getAllProperties,
     getPropertyById,
     updateProperty,
-    deleteProperty
+    deleteProperty,
+    getMyProperties: getMyPropertiesservice
  } = require("../services/propertyservices");
 const {uploadImages} = require("../services/imageservices");
 const create = async (req, res) => {
@@ -87,10 +88,32 @@ const remove = async (req, res) => {
       message: "Property deleted successfully"
     });
 };
+const getMyProperties = async (req, res) => {
+  try {
+    const properties = await getMyPropertiesservice(
+      req.user.userId
+    );
+
+    res.status(200).json({
+      success: true,
+      count: properties.length,
+      properties
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch your properties"
+    });
+  }
+};
 module.exports = {
   create,
   getAll,
   getProperty,
   update,
-  remove
+  remove,
+  getMyProperties
 };
