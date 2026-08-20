@@ -1,21 +1,90 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/useAuth";
+
+import "./Navbar.css";
 
 function Navbar() {
+  const navigate = useNavigate();
+
+  const {
+    user,
+    isAuthenticated,
+    logout
+  } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
-    <nav>
-      <div>
-        <Link to="/">
-          <strong>PropertyHub</strong>
+    <header className="navbar">
+
+      <div className="navbar-container">
+
+        {/* Logo */}
+        <Link to="/" className="logo">
+          Property<span>Hub</span>
         </Link>
+
+        {/* Main navigation */}
+        <nav className="nav-links">
+
+          <NavLink to="/" end>
+            Home
+          </NavLink>
+
+          <NavLink to="/properties">
+            Properties
+          </NavLink>
+
+          {isAuthenticated && (
+            <NavLink to="/favorites">
+              Favorites
+            </NavLink>
+          )}
+
+        </nav>
+
+        {/* Authentication actions */}
+        <div className="nav-actions">
+
+          {isAuthenticated ? (
+            <>
+              <span className="user-greeting">
+                Hi, {user?.name}
+              </span>
+
+              <button
+                onClick={handleLogout}
+                className="logout-button"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="login-link"
+              >
+                Login
+              </Link>
+
+              <Link
+                to="/register"
+                className="register-button"
+              >
+                Get Started
+              </Link>
+            </>
+          )}
+
+        </div>
+
       </div>
 
-      <div>
-        <Link to="/">Home</Link>
-        <Link to="/properties">Properties</Link>
-        <Link to="/login">Login</Link>
-        <Link to="/register">Register</Link>
-      </div>
-    </nav>
+    </header>
   );
 }
 
