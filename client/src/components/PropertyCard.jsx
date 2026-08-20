@@ -1,58 +1,29 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+
 import "./PropertyCard.css";
-import api from "../services/api";
+
+import { useFavorites } from "../context/useFavorites";
 
 function PropertyCard({ property }) {
-  const [favorited, setFavorited] = useState(false);
+  const {
+    isFavorite,
+    addFavorite,
+    removeFavorite
+  } = useFavorites();
+
+  const favorited = isFavorite(property._id);
 
   const image =
     property.images?.length > 0
       ? property.images[0].url
       : "https://placehold.co/600x400?text=No+Image";
 
-  useEffect(() => {
-    const checkFavorite = async () => {
-      try {
-        const token = localStorage.getItem("token");
-
-        if (!token) {
-          return;
-        }
-
-        const response = await api.get("/favorites");
-
-        const favorites = response.data.favorites || [];
-
-        const isFavorite = favorites.some((favorite) => {
-          const favoriteProperty =
-            favorite.property?._id || favorite.property;
-
-          return favoriteProperty === property._id;
-        });
-
-        setFavorited(isFavorite);
-      } catch (error) {
-        console.error(
-          "Failed to check favorite:",
-          error
-        );
-      }
-    };
-
-    checkFavorite();
-  }, [property._id]);
-
   const handleFavorite = async () => {
     try {
-      if (!favorited) {
-        await api.post(`/favorites/${property._id}`);
-
-        setFavorited(true);
+      if (favorited) {
+        await removeFavorite(property._id);
       } else {
-        await api.delete(`/favorites/${property._id}`);
-
-        setFavorited(false);
+        await addFavorite(property._id);
       }
     } catch (error) {
       console.error(
@@ -105,6 +76,7 @@ function PropertyCard({ property }) {
         </p>
 
         <div className="property-features">
+
           <span>
             🛏 {property.bedrooms} Beds
           </span>
@@ -116,6 +88,7 @@ function PropertyCard({ property }) {
           <span>
             📐 {property.area} m²
           </span>
+
         </div>
 
         <Link
