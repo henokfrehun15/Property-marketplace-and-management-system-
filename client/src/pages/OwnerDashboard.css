@@ -1,0 +1,283 @@
+/* ================================
+   OWNER DASHBOARD
+================================ */
+
+.owner-dashboard {
+  min-height: 100vh;
+  padding: 40px 6%;
+  background: #f7f8fc;
+}
+
+
+/* ================================
+   HEADER
+================================ */
+
+.dashboard-header {
+  max-width: 1200px;
+  margin: 0 auto 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.dashboard-eyebrow {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+
+  color: #6b7280;
+}
+
+.dashboard-header h1 {
+  margin: 0 0 8px;
+
+  font-size: 38px;
+  line-height: 1.15;
+
+  color: #111827;
+}
+
+.dashboard-header p {
+  margin: 0;
+
+  color: #6b7280;
+  font-size: 16px;
+}
+
+
+/* ================================
+   ADD PROPERTY BUTTON
+================================ */
+
+.add-property-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 13px 20px;
+
+  border-radius: 10px;
+
+  background: #111827;
+  color: white;
+
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.add-property-button:hover {
+  background: #1f2937;
+  transform: translateY(-1px);
+}
+
+
+/* ================================
+   STATISTICS
+================================ */
+
+.dashboard-stats {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 20px;
+}
+
+.stat-card {
+  padding: 25px;
+
+  background: white;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.stat-label {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: #6b7280;
+
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.stat-card strong {
+  display: block;
+
+  color: #111827;
+
+  font-size: 32px;
+  line-height: 1;
+}
+
+
+/* ================================
+   PROPERTIES SECTION
+================================ */
+
+.dashboard-properties {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dashboard-section-header {
+  margin-bottom: 22px;
+}
+
+.dashboard-section-header h2 {
+  margin: 0 0 6px;
+
+  color: #111827;
+
+  font-size: 24px;
+}
+
+.dashboard-section-header p {
+  margin: 0;
+
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+
+/* ================================
+   PROPERTY GRID
+================================ */
+
+.dashboard-properties .properties-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 24px;
+}
+
+
+/* ================================
+   EMPTY STATE
+================================ */
+
+.empty-dashboard {
+  padding: 70px 30px;
+
+  text-align: center;
+
+  background: white;
+
+  border: 1px dashed #d1d5db;
+
+  border-radius: 16px;
+}
+
+.empty-icon {
+  margin-bottom: 15px;
+
+  font-size: 48px;
+}
+
+.empty-dashboard h2 {
+  margin: 0 0 8px;
+
+  color: #111827;
+
+  font-size: 22px;
+}
+
+.empty-dashboard p {
+  margin: 0 0 25px;
+
+  color: #6b7280;
+}
+
+
+/* ================================
+   LOADING / ERROR
+================================ */
+
+.dashboard-status {
+  min-height: 60vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #6b7280;
+
+  font-size: 16px;
+}
+
+.dashboard-error {
+  color: #dc2626;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 1000px) {
+
+  .dashboard-properties .properties-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-stats {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .owner-dashboard {
+    padding: 30px 20px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dashboard-header h1 {
+    font-size: 30px;
+  }
+
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-properties .properties-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .add-property-button {
+    width: 100%;
+  }
+
+}
