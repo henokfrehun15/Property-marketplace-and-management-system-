@@ -1,0 +1,139 @@
+.owner-property-card {
+  overflow: hidden;
+
+  background: white;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.owner-property-image {
+  position: relative;
+
+  height: 220px;
+
+  overflow: hidden;
+}
+
+.owner-property-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.status-badge {
+  position: absolute;
+
+  top: 14px;
+  left: 14px;
+
+  padding: 6px 10px;
+
+  border-radius: 20px;
+
+  background: white;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-transform: capitalize;
+}
+
+.owner-property-content {
+  padding: 20px;
+}
+
+.owner-property-price {
+  margin-bottom: 6px;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  color: #111827;
+}
+
+.owner-property-content h3 {
+  margin: 0 0 8px;
+
+  font-size: 18px;
+
+  color: #111827;
+}
+
+.owner-property-content p {
+  margin: 0 0 16px;
+
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+.owner-property-features {
+  display: flex;
+  gap: 16px;
+
+  margin-bottom: 20px;
+
+  color: #4b5563;
+
+  font-size: 13px;
+}
+
+.owner-property-actions {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr 1fr;
+
+  gap: 8px;
+}
+
+.owner-property-actions a,
+.delete-property-button {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 38px;
+
+  border-radius: 8px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  text-decoration: none;
+
+  cursor: pointer;
+}
+
+.view-property-button {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.edit-property-button {
+  background: #111827;
+  color: white;
+}
+
+.delete-property-button {
+  border: none;
+
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.delete-property-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.owner-property-actions a:hover,
+.delete-property-button:hover:not(:disabled) {
+  opacity: 0.85;
+}
