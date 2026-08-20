@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import PropertyCard from "../components/PropertyCard";
+import "./Properties.css";
 
 function Properties() {
   const [properties, setProperties] = useState([]);
@@ -14,7 +16,7 @@ function Properties() {
         setProperties(response.data.properties);
       } catch (error) {
         console.error(error);
-        setError("Failed to load properties");
+        setError("Failed to load properties.");
       } finally {
         setLoading(false);
       }
@@ -23,36 +25,58 @@ function Properties() {
     fetchProperties();
   }, []);
 
-  if (loading) {
-    return <p>Loading properties...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
-
   return (
-    <div>
-      <h1>Properties</h1>
+    <main className="properties-page">
 
-      {properties.length === 0 ? (
-        <p>No properties found.</p>
-      ) : (
-        properties.map((property) => (
-          <div key={property._id}>
-            <h2>{property.title}</h2>
+      <section className="properties-header">
+        <div>
+          <p className="eyebrow">
+            PROPERTY MARKETPLACE
+          </p>
 
-            <p>
-              {property.price} ETB
-            </p>
+          <h1>
+            Find your perfect property
+          </h1>
 
-            <p>
-              {property.location?.city}
-            </p>
-          </div>
-        ))
+          <p>
+            Explore homes, apartments and properties
+            available in your area.
+          </p>
+        </div>
+
+        <span>
+          {properties.length} Properties
+        </span>
+      </section>
+
+      {loading && (
+        <div className="status-message">
+          Loading properties...
+        </div>
       )}
-    </div>
+
+      {error && (
+        <div className="status-message error">
+          {error}
+        </div>
+      )}
+
+      {!loading && !error && (
+        <section className="property-grid">
+          {properties.length === 0 ? (
+            <p>No properties found.</p>
+          ) : (
+            properties.map((property) => (
+              <PropertyCard
+                key={property._id}
+                property={property}
+              />
+            ))
+          )}
+        </section>
+      )}
+
+    </main>
   );
 }
 
