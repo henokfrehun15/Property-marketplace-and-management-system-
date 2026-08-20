@@ -21,8 +21,9 @@ const addFavorite = async (userId, propertyId) => {
     user: userId,
     property: propertyId
   });
+  const populatedFavorite = await favorite.populate("property");
 
-  return favorite;
+  return populatedFavorite;
 };
 const getFavorites = async (userId) => {
   const favorites = await Favorite.find({
