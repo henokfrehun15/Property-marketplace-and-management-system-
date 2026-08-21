@@ -64,17 +64,72 @@ const getProperty = async (req, res) => {
     });
 };
 const update = async (req, res) => {
-    const property = await updateProperty(
-      req.params.id,
-      req.body,
-      req.user.userId,
-      req.user.role
-    );
-    res.status(200).json({
-      success: true,
-      message: "Property updated successfully",
-      property
-    });
+  let updateData = { ...req.body };
+
+  // Parse location if it was sent as JSON
+  if (req.body.location) {
+    try {
+      updateData.location =
+        typeof req.body.location === "string"
+          ? JSON.parse(req.body.location)
+          : req.body.location;
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid location format"
+      });
+    }
+  }
+
+
+  // Convert numbers
+  if (req.body.price !== undefined) {
+    updateData.price = Number(req.body.price);
+  }
+
+  if (req.body.bedrooms !== undefined) {
+    updateData.bedrooms = Number(req.body.bedrooms);
+  }
+
+  if (req.body.bathrooms !== undefined) {
+    updateData.bathrooms = Number(req.body.bathrooms);
+  }
+
+  if (req.body.area !== undefined) {
+    updateData.area = Number(req.body.area);
+  }
+
+  // Existing images that user wants removed
+  let removedImages = [];
+
+  if (req.body.removedImages) {
+    try {
+      removedImages =
+        typeof req.body.removedImages === "string"
+          ? JSON.parse(req.body.removedImages)
+          : req.body.removedImages;
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid removedImages format"
+      });
+    }
+  }
+  const newImages = req.files || [];
+  const property = await updateProperty(
+    req.params.id,
+    updateData,
+    req.user.userId,
+    req.user.role,
+    newImages,
+    removedImages
+  );
+
+  res.status(200).json({
+    success: true,
+    message: "Property updated successfully",
+    property
+  });
 };
 const remove = async (req, res) => {
     await deleteProperty(
