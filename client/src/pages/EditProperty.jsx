@@ -27,9 +27,13 @@ function EditProperty() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
-  // ==============================
+  const [existingImages, setExistingImages] = useState([]);
+  const [newImages, setNewImages] = useState([]);
+  const [removedImages, setRemovedImages] = useState([]);
+
+  // ==========================================
   // LOAD PROPERTY
-  // ==============================
+  // ==========================================
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -37,9 +41,7 @@ function EditProperty() {
         setLoading(true);
         setError("");
 
-        const response = await api.get(
-          `/properties/${id}`
-        );
+        const response = await api.get(`/properties/${id}`);
 
         const property = response.data.property;
 
@@ -57,6 +59,7 @@ function EditProperty() {
           address: property.location?.address || ""
         });
 
+        setExistingImages(property.images || []);
       } catch (error) {
         console.error(error);
 
@@ -64,7 +67,6 @@ function EditProperty() {
           error.response?.data?.message ||
           "Failed to load property."
         );
-
       } finally {
         setLoading(false);
       }
@@ -73,10 +75,9 @@ function EditProperty() {
     fetchProperty();
   }, [id]);
 
-
-  // ==============================
+  // ==========================================
   // HANDLE INPUT
-  // ==============================
+  // ==========================================
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -87,10 +88,70 @@ function EditProperty() {
     }));
   };
 
+  // ==========================================
+  // ADD NEW IMAGES
+  // ==========================================
 
-  // ==============================
+  const handleNewImages = (e) => {
+    const files = Array.from(e.target.files || []);
+
+    if (files.length === 0) {
+      return;
+    }
+
+    const totalImages =
+      existingImages.length +
+      newImages.length +
+      files.length;
+
+    if (totalImages > 10) {
+      setError("You can have a maximum of 10 images.");
+      e.target.value = "";
+      return;
+    }
+
+    setError("");
+
+    setNewImages((previous) => [
+      ...previous,
+      ...files
+    ]);
+
+    e.target.value = "";
+  };
+
+  // ==========================================
+  // REMOVE EXISTING IMAGE
+  // ==========================================
+
+  const removeExistingImage = (image) => {
+    setExistingImages((previous) =>
+      previous.filter(
+        (item) => item.publicId !== image.publicId
+      )
+    );
+
+    setRemovedImages((previous) => [
+      ...previous,
+      image
+    ]);
+  };
+
+  // ==========================================
+  // REMOVE NEW IMAGE
+  // ==========================================
+
+  const removeNewImage = (index) => {
+    setNewImages((previous) =>
+      previous.filter(
+        (_, imageIndex) => imageIndex !== index
+      )
+    );
+  };
+
+  // ==========================================
   // SUBMIT
-  // ==============================
+  // ==========================================
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -99,31 +160,63 @@ function EditProperty() {
       setSaving(true);
       setError("");
 
-      const propertyData = {
-        title: formData.title,
-        description: formData.description,
+      const data = new FormData();
 
-        propertyType:
-          formData.propertyType,
+      // ========================================
+      // PROPERTY INFORMATION
+      // ========================================
 
-        listingType:
-          formData.listingType,
+      data.append("title", formData.title);
+      data.append("description", formData.description);
+      data.append("propertyType", formData.propertyType);
+      data.append("listingType", formData.listingType);
 
-        price: Number(formData.price),
-        bedrooms: Number(formData.bedrooms),
-        bathrooms: Number(formData.bathrooms),
-        area: Number(formData.area),
+      // ========================================
+      // NUMERIC VALUES
+      // ========================================
 
-        location: {
+      data.append("price", formData.price);
+      data.append("bedrooms", formData.bedrooms);
+      data.append("bathrooms", formData.bathrooms);
+      data.append("area", formData.area);
+
+      // ========================================
+      // LOCATION
+      // ========================================
+
+      data.append(
+        "location",
+        JSON.stringify({
           city: formData.city,
           subCity: formData.subCity,
           address: formData.address
-        }
-      };
+        })
+      );
+
+      // ========================================
+      // REMOVED IMAGES
+      // ========================================
+
+      data.append(
+        "removedImages",
+        JSON.stringify(removedImages)
+      );
+
+      // ========================================
+      // NEW IMAGES
+      // ========================================
+
+      newImages.forEach((image) => {
+        data.append("images", image);
+      });
+
+      // ========================================
+      // UPDATE REQUEST
+      // ========================================
 
       await api.put(
         `/properties/${id}`,
-        propertyData
+        data
       );
 
       navigate("/dashboard");
@@ -135,16 +228,14 @@ function EditProperty() {
         error.response?.data?.message ||
         "Failed to update property."
       );
-
     } finally {
       setSaving(false);
     }
   };
 
-
-  // ==============================
+  // ==========================================
   // LOADING
-  // ==============================
+  // ==========================================
 
   if (loading) {
     return (
@@ -156,10 +247,9 @@ function EditProperty() {
     );
   }
 
-
-  // ==============================
-  // ERROR
-  // ==============================
+  // ==========================================
+  // INITIAL ERROR
+  // ==========================================
 
   if (error && !formData.title) {
     return (
@@ -171,11 +261,16 @@ function EditProperty() {
     );
   }
 
+  // ==========================================
+  // PAGE
+  // ==========================================
 
   return (
     <main className="edit-property-page">
 
       <div className="edit-property-container">
+
+        {/* HEADER */}
 
         <div className="edit-property-header">
 
@@ -193,6 +288,7 @@ function EditProperty() {
 
         </div>
 
+        {/* ERROR */}
 
         {error && (
           <div className="form-error">
@@ -200,15 +296,14 @@ function EditProperty() {
           </div>
         )}
 
-
         <form
           className="property-form"
           onSubmit={handleSubmit}
         >
 
-          {/* ==========================
+          {/* =====================================
               PROPERTY INFORMATION
-          ========================== */}
+          ====================================== */}
 
           <section className="form-section">
 
@@ -234,7 +329,6 @@ function EditProperty() {
 
               </div>
 
-
               <div className="form-group full-width">
 
                 <label>
@@ -250,7 +344,6 @@ function EditProperty() {
                 />
 
               </div>
-
 
               <div className="form-group">
 
@@ -297,7 +390,6 @@ function EditProperty() {
 
               </div>
 
-
               <div className="form-group">
 
                 <label>
@@ -331,10 +423,9 @@ function EditProperty() {
 
           </section>
 
-
-          {/* ==========================
-              DETAILS
-          ========================== */}
+          {/* =====================================
+              PROPERTY DETAILS
+          ====================================== */}
 
           <section className="form-section">
 
@@ -361,7 +452,6 @@ function EditProperty() {
 
               </div>
 
-
               <div className="form-group">
 
                 <label>
@@ -379,7 +469,6 @@ function EditProperty() {
 
               </div>
 
-
               <div className="form-group">
 
                 <label>
@@ -396,7 +485,6 @@ function EditProperty() {
                 />
 
               </div>
-
 
               <div className="form-group">
 
@@ -419,10 +507,9 @@ function EditProperty() {
 
           </section>
 
-
-          {/* ==========================
+          {/* =====================================
               LOCATION
-          ========================== */}
+          ====================================== */}
 
           <section className="form-section">
 
@@ -448,7 +535,6 @@ function EditProperty() {
 
               </div>
 
-
               <div className="form-group">
 
                 <label>
@@ -463,7 +549,6 @@ function EditProperty() {
                 />
 
               </div>
-
 
               <div className="form-group full-width">
 
@@ -485,10 +570,129 @@ function EditProperty() {
 
           </section>
 
+          {/* =====================================
+              EXISTING IMAGES
+          ====================================== */}
 
-          {/* ==========================
+          <section className="form-section">
+
+            <h2>
+              Existing Images
+            </h2>
+
+            {existingImages.length === 0 ? (
+
+              <p className="no-images">
+                No existing images.
+              </p>
+
+            ) : (
+
+              <div className="edit-images-grid">
+
+                {existingImages.map((image) => (
+
+                  <div
+                    className="edit-image-item"
+                    key={image.publicId}
+                  >
+
+                    <img
+                      src={image.url}
+                      alt="Property"
+                    />
+
+                    <button
+                      type="button"
+                      className="remove-image-button"
+                      onClick={() =>
+                        removeExistingImage(image)
+                      }
+                    >
+                      Remove
+                    </button>
+
+                  </div>
+
+                ))}
+
+              </div>
+
+            )}
+
+          </section>
+
+          {/* =====================================
+              ADD NEW IMAGES
+          ====================================== */}
+
+          <section className="form-section">
+
+            <h2>
+              Add New Images
+            </h2>
+
+            <div className="image-upload">
+
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleNewImages}
+              />
+
+              <p>
+                You can have a maximum of 10 images.
+              </p>
+
+              <p>
+                Current images:{" "}
+                {existingImages.length +
+                  newImages.length}
+                /10
+              </p>
+
+            </div>
+
+            {newImages.length > 0 && (
+
+              <div className="edit-images-grid">
+
+                {newImages.map((image, index) => (
+
+                  <div
+                    className="edit-image-item"
+                    key={`${image.name}-${index}`}
+                  >
+
+                    <img
+                      src={URL.createObjectURL(image)}
+                      alt={image.name}
+                    />
+
+                    <button
+                      type="button"
+                      className="remove-image-button"
+                      onClick={() =>
+                        removeNewImage(index)
+                      }
+                    >
+                      Remove
+                    </button>
+
+                  </div>
+
+                ))}
+
+              </div>
+
+            )}
+
+          </section>
+
+          {/* =====================================
               ACTIONS
-          ========================== */}
+          ====================================== */}
 
           <div className="form-actions">
 
@@ -498,6 +702,7 @@ function EditProperty() {
               onClick={() =>
                 navigate("/dashboard")
               }
+              disabled={saving}
             >
               Cancel
             </button>
