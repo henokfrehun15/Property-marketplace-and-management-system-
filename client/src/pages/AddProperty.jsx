@@ -6,6 +6,7 @@ import api from "../services/api";
 // import "./AddProperty.css";
 
 function AddProperty() {
+
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -37,8 +38,21 @@ function AddProperty() {
   };
 
   const handleImages = (e) => {
-    setImages(Array.from(e.target.files));
+  const selectedFiles = Array.from(e.target.files);
+
+  if (selectedFiles.length > 10) {
+    setError("You can upload a maximum of 10 images.");
+    return;
+  }
+
+  setError("");
+  setImages(selectedFiles);
   };
+  const removeImage = (index) => {
+  setImages((previousImages) =>
+    previousImages.filter((_, imageIndex) => imageIndex !== index)
+  );
+};  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -414,9 +428,7 @@ function AddProperty() {
 
           <section className="form-section">
 
-            <h2>
-              Property Images
-            </h2>
+            <h2>Property Images</h2>
 
             <div className="image-upload">
 
@@ -440,6 +452,34 @@ function AddProperty() {
               )}
 
             </div>
+
+            {images.length > 0 && (
+              <div className="image-preview-grid">
+
+                {images.map((image, index) => (
+                  <div
+                    className="image-preview"
+                    key={`${image.name}-${index}`}
+                  >
+
+                    <img
+                      src={URL.createObjectURL(image)}
+                      alt={`Property ${index + 1}`}
+                    />
+
+                    <button
+                      type="button"
+                      className="remove-image-button"
+                      onClick={() => removeImage(index)}
+                    >
+                      ×
+                    </button>
+
+                  </div>
+                ))}
+
+              </div>
+            )}
 
           </section>
 
