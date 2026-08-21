@@ -71,6 +71,7 @@ router.put(
   "/:id",
   protect,
   authorize("owner", "admin"),
+  uploadMiddleware.array("images", 10),
   asyncMiddleware(update)
 );
 
