@@ -1,7 +1,8 @@
 const Property = require("../models/property");
 const AppError = require("../utils/appError");
 const {
-  deleteImages
+  deleteImages,
+  uploadImages
 } = require("./imageservices");
 const createProperty = async (
   propertyData, 
@@ -162,34 +163,91 @@ const getPropertyById = async (propertyId) => {
 
   return property;
 };
-const updateProperty = async (propertyId, updateData, userId, userRole) => {
+const updateProperty = async (
+  propertyId,
+  updateData,
+  userId,
+  userRole,
+  newImages = [],
+  removedImages = []
+) => {
   const property = await Property.findById(propertyId);
 
   if (!property) {
     throw new AppError("Property not found", 404);
   }
 
-  const isOwner = property.owner.toString() === userId.toString();
+  const isOwner =
+    property.owner.toString() === userId.toString();
+
   const isAdmin = userRole === "admin";
 
   if (!isOwner && !isAdmin) {
-    const error = new AppError(
+    throw new AppError(
       "You do not have permission to update this property",
       403
     );
-
-    error.statusCode = 403;
-    throw error;
   }
 
-  const updatedProperty = await Property.findByIdAndUpdate(
-    propertyId,
-    updateData,
-    {
-      new: true,
-      runValidators: true
-    }
-  ).populate("owner", "name email");
+  // --------------------------------
+  // DELETE REMOVED IMAGES
+  // --------------------------------
+
+  if (removedImages.length > 0) {
+    await deleteImages(removedImages);
+  }
+
+  // --------------------------------
+  // UPLOAD NEW IMAGES
+  // --------------------------------
+
+  let uploadedImages = [];
+
+  if (newImages.length > 0) {
+    uploadedImages = await uploadImages(newImages);
+  }
+
+  // --------------------------------
+  // UPDATE IMAGE ARRAY
+  // --------------------------------
+
+  const remainingImages = property.images.filter(
+    (existingImage) =>
+      !removedImages.some(
+        (removedImage) =>
+          removedImage.publicId === existingImage.publicId
+      )
+  );
+
+  const updatedImages = [
+    ...remainingImages,
+    ...uploadedImages
+  ];
+
+  // Maximum 10 images
+  if (updatedImages.length > 10) {
+    throw new AppError(
+      "A property can have a maximum of 10 images",
+      400
+    );
+  }
+
+  // --------------------------------
+  // UPDATE PROPERTY
+  // --------------------------------
+
+  const updatedProperty =
+    await Property.findByIdAndUpdate(
+      propertyId,
+      {
+        ...updateData,
+        images: updatedImages
+      },
+      {
+        new: true,
+        runValidators: true
+      }
+    ).populate("owner", "name email");
 
   return updatedProperty;
 };
