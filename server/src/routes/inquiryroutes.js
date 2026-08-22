@@ -4,7 +4,8 @@ const {
   create,
   getSent,
   getReceived,
-  updateStatus
+  updateStatus,
+  reply 
 } = require("../controllers/inquirycontroller");
 
 const protect = require("../middleware/authmiddleware");
@@ -31,5 +32,10 @@ router.patch(
   "/:id/status",
   protect,
   asyncMiddleware(updateStatus)
+);
+router.patch(
+  "/:id/reply",
+  protect,
+  asyncMiddleware(reply)
 );
 module.exports = router;
