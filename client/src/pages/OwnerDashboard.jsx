@@ -96,7 +96,6 @@ const handleDelete = (propertyId) => {
         >
           + Add Property
         </Link>
-
       </section>
 
 
