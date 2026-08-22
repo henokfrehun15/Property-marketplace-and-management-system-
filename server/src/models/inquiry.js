@@ -37,6 +37,15 @@ const inquirySchema = new mongoose.Schema(
         "closed"
       ],
       default: "pending"
+    },
+    reply: {
+      type: String,
+      trim: true,
+      maxlength: 1000
+    },
+
+    repliedAt: {
+      type: Date
     }
   },
   {
