@@ -195,6 +195,15 @@ const updateProperty = async (
 
   if (removedImages.length > 0) {
     await deleteImages(removedImages);
+  
+   const removedPublicIds = removedImages.map(
+      (image) => image.publicId
+    );
+
+    property.images = property.images.filter(
+      (image) =>
+        !removedPublicIds.includes(image.publicId)
+    );
   }
 
   // --------------------------------
