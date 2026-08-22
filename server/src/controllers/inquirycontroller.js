@@ -1,9 +1,9 @@
-const { get } = require("mongoose");
 const {
   createInquiry,
   getSentInquiries,
   getReceivedInquiries,
-  updateInquiryStatus
+  updateInquiryStatus,
+  replyToInquiry
 } = require("../services/inquiryservices");
 
 const create = async (req, res) => {
@@ -19,6 +19,7 @@ const create = async (req, res) => {
     inquiry
   });
 };
+
 const getSent = async (req, res) => {
   const inquiries = await getSentInquiries(
     req.user.userId
@@ -30,6 +31,7 @@ const getSent = async (req, res) => {
     inquiries
   });
 };
+
 const getReceived = async (req, res) => {
   const inquiries = await getReceivedInquiries(
     req.user.userId
@@ -41,6 +43,7 @@ const getReceived = async (req, res) => {
     inquiries
   });
 };
+
 const updateStatus = async (req, res) => {
   const inquiry = await updateInquiryStatus(
     req.params.id,
@@ -54,9 +57,25 @@ const updateStatus = async (req, res) => {
     inquiry
   });
 };
+
+const reply = async (req, res) => {
+  const inquiry = await replyToInquiry(
+    req.params.id,
+    req.user.userId,
+    req.body.reply
+  );
+
+  res.status(200).json({
+    success: true,
+    message: "Reply sent successfully",
+    inquiry
+  });
+};
+
 module.exports = {
   create,
   getSent,
   getReceived,
-  updateStatus
+  updateStatus,
+  reply
 };
