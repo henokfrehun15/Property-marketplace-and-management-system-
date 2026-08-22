@@ -43,9 +43,22 @@ function Navbar() {
               Favorites
             </NavLink>
           )}
-          <NavLink to="/dashboard">
-            Dashboard
-          </NavLink>
+          {isAuthenticated && user?.role === "owner" && (
+            <>
+              <NavLink to="/dashboard">
+                Dashboard
+              </NavLink>
+
+              <NavLink to="/inquiries/received">
+                Received Inquiries
+              </NavLink>
+            </>
+          )}
+          {isAuthenticated && (
+              <NavLink to="/inquiries/sent">
+                My Inquiries
+              </NavLink>
+            )}
 
         </nav>
 
