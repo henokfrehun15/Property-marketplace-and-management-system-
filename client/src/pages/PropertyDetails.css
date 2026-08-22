@@ -272,3 +272,204 @@
   color: #e11d48;
   border-color: #fecdd3;
 }
+/* ==========================================
+   OWNER INFORMATION
+========================================== */
+
+.owner-info {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.owner-info h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.owner-info p {
+  margin: 5px 0;
+  color: #6b7280;
+}
+
+/* ==========================================
+   CONTACT MODAL
+========================================== */
+
+.contact-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.contact-modal {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.contact-modal h2 {
+  margin: 0 0 8px;
+  font-size: 26px;
+}
+
+.contact-modal-property {
+  margin: 0 0 24px;
+  color: #6b7280;
+}
+
+.contact-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  font-size: 28px;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.contact-modal-close:hover {
+  color: #111827;
+}
+
+/* ==========================================
+   CONTACT FORM
+========================================== */
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-form label {
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.contact-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+  min-height: 140px;
+  padding: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 15px;
+  outline: none;
+}
+
+.contact-form textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.message-counter {
+  text-align: right;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* ==========================================
+   INQUIRY ERROR
+========================================== */
+
+.inquiry-error {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #dc2626;
+  font-size: 14px;
+}
+
+/* ==========================================
+   FORM ACTIONS
+========================================== */
+
+.contact-form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.cancel-contact-button,
+.send-inquiry-button {
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cancel-contact-button {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.cancel-contact-button:hover {
+  background: #e5e7eb;
+}
+
+.send-inquiry-button {
+  background: #2563eb;
+  color: white;
+}
+
+.send-inquiry-button:hover {
+  background: #1d4ed8;
+}
+
+.send-inquiry-button:disabled,
+.cancel-contact-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ==========================================
+   SUCCESS
+========================================== */
+
+.inquiry-success {
+  text-align: center;
+  padding: 15px 0;
+}
+
+.success-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #dcfce7;
+  color: #16a34a;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.inquiry-success h3 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.inquiry-success p {
+  color: #6b7280;
+  margin-bottom: 24px;
+}
