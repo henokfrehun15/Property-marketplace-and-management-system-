@@ -8,6 +8,8 @@ import Favorites from "./pages/Favorites";
 import OwnerDashboard from "./pages/OwnerDashboard";
 import AddProperty from "./pages/AddProperty";
 import EditProperty from "./pages/EditProperty";
+import OwnerInquiries from "./pages/OwnerInquiries";
+import SentInquiries from "./pages/SentInquiries";
 function Home() {
   return (
     <div>
@@ -37,6 +39,12 @@ function App() {
             path="/Favorites" element={<Favorites />}
           />
         </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="/dashboard"
+            element={<OwnerDashboard />}
+          />
+        </Route>
         <Route
           path="/dashboard"
           element={<OwnerDashboard />}
@@ -49,6 +57,17 @@ function App() {
           path="/properties/:id/edit"
           element={<EditProperty />}
         />
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="/inquiries/received"
+            element={<OwnerInquiries />}
+          />
+          <Route
+            path="/inquiries/sent"
+            element={<SentInquiries />}
+          />
+        </Route>
+        
       </Routes>
     </BrowserRouter>
   );
